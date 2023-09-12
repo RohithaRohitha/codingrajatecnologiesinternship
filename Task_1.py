@@ -17,6 +17,19 @@ def save_tasks():
     with open(TASKS_FILE, "w") as file:
         json.dump(tasks, file)
 
+def completed_tasks():
+    if not tasks:
+        print("No tasks added.")
+    else:
+        i=0
+        for index, task in enumerate(tasks, start=1):
+            if task['completed']:
+                print("Tasks:")
+                print(f"{index}. {task['name']} (Priority: {task['priority']}, Due Date: {task['due_date']})")
+                i=i+1
+        if i == 0:
+            print("There are no completed tasks")
+                
 def display_tasks():
     if not tasks:
         print("No tasks found.")
@@ -29,7 +42,8 @@ def add_task(name, priority, due_date):
     task = {
         "name": name,
         "priority": priority,
-        "due_date": due_date
+        "due_date": due_date,
+        "completed": False
     }
     tasks.append(task)
     save_tasks()
@@ -57,7 +71,8 @@ while True:
     print("2. Add Task")
     print("3. Remove Task")
     print("4. Mark Task as Completed")
-    print("5. Quit")
+    print("5. Display completed tasks")
+    print("6. Quit")
 
     choice = input("Enter your choice (1/2/3/4/5): ")
 
@@ -75,7 +90,11 @@ while True:
         index = int(input("Enter the index of the task to mark as completed: "))
         mark_task_completed(index)
     elif choice == "5":
+        completed_tasks()
+
+    elif choice == "6":
         print("Goodbye!")
         break
     else:
         print("Invalid choice. Please select a valid option.")
+        
